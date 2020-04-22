@@ -21,12 +21,24 @@ jsPsych.plugins.zeyi = (function() {
         default: undefined,
         description: 'The images to be displayed.'
       },
-      speed: {
+        dotsize: {
+          type: jsPsych.plugins.parameterType.INT,
+          pretty_name: 'Stimuli size',
+          default: 0.01,
+          description: 'dot size'
+        },
+      initialspeed: {
         type: jsPsych.plugins.parameterType.INT,
         pretty_name: 'initial moving speed',
         default: 0.001,
-        description: 'initial moving speed.'
+        description: 'initial moving speed'
       },
+        speed: {
+          type: jsPsych.plugins.parameterType.INT,
+          pretty_name: 'base moving speed',
+          default: 0.001,
+          description: 'base moving speed.'
+        },
       initialkey: {
         type: jsPsych.plugins.parameterType.INT,
         pretty_name: 'initial moving direction',
@@ -89,20 +101,23 @@ jsPsych.plugins.zeyi = (function() {
     var animation_sequence = [];
     var responses = [];
     var current_stim = "";
-    var xpos = vh/2;
-    var ypos = vw/2;
     var bL = trial.boundaryL * vw;
     var bR = trial.boundaryR * vw;
     var speed0 = trial.speed * vw;
     var previouskey = trial.initialkey;
-    var speed = speed0 * previouskey;
+    var speed = trial.initialspeed * vw * previouskey;
     var currentkey = 0;
+    var dotsize = vw * trial.dotsize;
+    var xpos = vh/2;
+    var ypos = vw/2;
+    var isend = 0;
+    var islasttrial = 0;
 
     var animate_interval = setInterval(function() {
       var showImage = true;
       display_element.innerHTML = ''; // clear everything
       animate_frame++;
-      if (ypos < bL || ypos > bR) {
+      if (isend == 1){
           endTrial();
           clearInterval(animate_interval);
           showImage = false;
@@ -113,28 +128,79 @@ jsPsych.plugins.zeyi = (function() {
     }, interval_time);
 
     function show_next_frame() {
+
+
       // show image
-      display_element.innerHTML = '<img src="'+trial.dot+'" id="zeyibL" style="position:absolute; left: 0; top: 0;"></img><img src="'+trial.dot+'" id="zeyibR" style="position:absolute; left: 0; top: 0;"></img><img src="'+trial.dot+'" id="zeyi" style="position:absolute; left: 0; top: 0;"></img>';
-      var theImg = document.getElementById('zeyibL');
-      theImg.height = 100;
-      theImg.width = 20;
-      theImg.style.top = xpos + "px";
-      theImg.style.left = bL + "px";
-      var theImg = document.getElementById('zeyibR');
-      theImg.height = 100;
-      theImg.width = 20;
-      theImg.style.top = xpos + "px";
-      theImg.style.left = bR + "px";
-      var theImg = document.getElementById('zeyi');
-      theImg.height = 20;
-      theImg.width = 20;
-      theImg.style.top = xpos + "px";
-      theImg.style.left = ypos + "px";
-      current_stim = trial.dot;
+      display_element.innerHTML = '<canvas id="rect" width="'+vw.toString()+'" height="'+(vh*0.9).toString()+'">';//'</canvas><img src="'+trial.dot+'" id="zeyi" style="position:absolute; left: 0; top: 0;"></img>';
+            var canvas = document.getElementById('rect');
+            var context = canvas.getContext('2d');
+            context.fillStyle = "#a8ee90";
+            context.fillRect(0,xpos - vh * 0.2, vw, vh * 0.4);
+            if (islasttrial == 1){
+                context.fillStyle = "#000000"
+                context.fillRect(bL-2*dotsize,xpos - vh * 0.2,2*dotsize,vh * 0.4);
+                context.fillStyle = "#FF0000"
+                context.fillRect(bR,xpos - vh * 0.2,2*dotsize,vh * 0.4);
+            }
+            if (islasttrial == -1){
+                context.fillStyle = "#FF0000"
+                context.fillRect(bL-2*dotsize,xpos - vh * 0.2,2*dotsize,vh * 0.4);
+                context.fillStyle = "#000000"
+                context.fillRect(bR,xpos - vh * 0.2,2*dotsize,vh * 0.4);
+            }
+            if (islasttrial == 0){
+                context.fillStyle = "#000000"
+                context.fillRect(bL-2*dotsize,xpos - vh * 0.2,2*dotsize,vh * 0.4);
+                context.fillStyle = "#000000"
+                context.fillRect(bR,xpos - vh * 0.2,2*dotsize,vh * 0.4);
+            }
+            context.arc(ypos, xpos, dotsize/2, 0, 2 * Math.PI, false);
+            context.fillStyle = 'red';
+            context.fill();
+            // var theImg = document.getElementById('zeyi');
+            // theImg.height = dotsize;
+            // theImg.width = dotsize;
+            // theImg.style.top = xpos - dotsize/2 + "px";
+            // theImg.style.left = ypos - dotsize/2 + "px";
+            // current_stim = trial.dot;
+            if (islasttrial == 0){
+                ypos = ypos + speed;
+            }
+
+
+                  // record when image was shown
+            animation_sequence.push({
+                mRT: performance.now() - startTime,
+                mPos: ypos,
+                mSpeed: speed,
+                mKey: currentkey,
+                mDir: previouskey
+            });
+
+            if (ypos - dotsize/2 < bL || ypos + dotsize/2 > bR) {
+                if (ypos - dotsize/2 < bL){
+                    islasttrial = -1;
+                }
+                if (ypos + dotsize/2 > bR){
+                    islasttrial = 1;
+                }
+            }
+      // display_element.innerHTML = '<img src="'+trial.bars+'" id="zeyibL" style="position:absolute; left: 0; top: 0;"></img><img src="'+trial.bars+'" id="zeyibR" style="position:absolute; left: 0; top: 0;"></img><img src="'+trial.dot+'" id="zeyi" style="position:absolute; left: 0; top: 0;"></img>';
+      // var theImg = document.getElementById('zeyibL');
+      // theImg.height = 100;
+      // theImg.width = 20;
+      // theImg.style.top = xpos - theImg.height/2 + "px";
+      // theImg.style.left = bL + "px";
+      // var theImg = document.getElementById('zeyibR');
+      // theImg.height = 100;
+      // theImg.width = 20;
+      // theImg.style.top = xpos -  theImg.height/2 + "px";
+      // theImg.style.left = bR + "px";
+
+
       // ypos = ypos + speed;
       // if (last(responses.key_press) == 102) {
       // }
-      ypos = ypos + speed;
       if (currentkey !== 0){
           if (currentkey == previouskey) {
               speed = speed + speed0 * currentkey;
@@ -145,12 +211,6 @@ jsPsych.plugins.zeyi = (function() {
           previouskey = currentkey;
           currentkey = 0;
       }
-
-      // record when image was shown
-      animation_sequence.push({
-        "stimulus": trial.dot,
-        "time": performance.now() - startTime
-      });
 
       if (trial.prompt !== null) {
         display_element.innerHTML += trial.prompt;
@@ -171,15 +231,21 @@ jsPsych.plugins.zeyi = (function() {
 
     var after_response = function(info) {
       responses.push({
-        key_press: info.key,
-        rt: info.rt,
-        stimulus: current_stim
+        mKey: info.key,
+        mRT: info.rt
+        // stimulus: current_stim
       });
-      if (info.key == 70){
+      if (info.key == trial.choices[0].codePointAt()){
           currentkey = -1;
+          if (islasttrial == -1){
+              isend = 1;
+          }
       }
-      if (info.key == 74){
+      if (info.key == trial.choices[1].codePointAt()){
           currentkey = 1;
+          if (islasttrial == 1){
+              isend = 1;
+          }
       }
 
       // after a valid response, the stimulus will have the CSS class 'responded'
@@ -195,7 +261,8 @@ jsPsych.plugins.zeyi = (function() {
       valid_responses: trial.choices,
       rt_method: 'performance',
       persist: true,
-      allow_held_key: false
+      allow_held_key: false,
+      choice: islasttrial
     });
 
     function endTrial() {
@@ -203,8 +270,20 @@ jsPsych.plugins.zeyi = (function() {
       jsPsych.pluginAPI.cancelKeyboardResponse(response_listener);
 
       var trial_data = {
+        "x": vw,
+        "y": vh,
+        "bL": bL,
+        "bR": bR,
+        "dotsize": dotsize,
+        "starttime": startTime,
+        "basespeed": speed0,
+        "speed0": trial.initialspeed,
+        "init_direction": trial.initialkey,
+        "time_frame": trial.frame_time,
+        "time_ISI": trial.frame_isi,
+        "responses": JSON.stringify(responses),
         "animation_sequence": JSON.stringify(animation_sequence),
-        "responses": JSON.stringify(responses)
+
       };
 
       jsPsych.finishTrial(trial_data);

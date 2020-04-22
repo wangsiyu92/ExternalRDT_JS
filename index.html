@@ -4,48 +4,35 @@
     <title>My experiment</title>
     <script src="jspsych-6/jspsych.js"></script>
     <script src="zeyianimation.js"></script>
-    <script src="jspsych-6/plugins/jspsych-rdk.js"></script>
+    <script src="zeyirdk.js"></script>
+    <script src="jspsych-6/plugins/jspsych-fullscreen.js"></script>
     <script src="jspsych-6/plugins/jspsych-animation.js"></script>
     <script src="jspsych-6/plugins/jspsych-html-keyboard-response.js"></script>
     <script src="jspsych-6/plugins/jspsych-image-keyboard-response.js"></script>
-    <link href="jspsych-6/css/jspsych.css" rel="stylesheet" type="text/css"></link>
+    <link href="zeyi.css" rel="stylesheet" type="text/css"></link>
   </head>
-  <body></body>
+  <body>
+  </body>
   <script>
-
-
-
-
+    var subject_id = jsPsych.randomization.randomID(10);
+    var mdate = Date.now();
+    console.log(mdate);
+    jsPsych.data.addProperties({
+      subject: subject_id,
+      date: mdate
+    });
     /* create timeline */
     var timeline = [];
-
+    timeline.push({
+      type: 'fullscreen',
+      fullscreen_mode: true
+    });
     /* define welcome message trial */
     var welcome = {
       type: "html-keyboard-response",
       stimulus: "Welcome to the experiment. Press any key to begin."
     };
     timeline.push(welcome);
-
-    /* define instructions trial */
-    // var instructions = {
-    //   type: "html-keyboard-response",
-    //   stimulus: "<p>In this experiment, a circle will appear in the center " +
-    //       "of the screen.</p><p>If the circle is <strong>blue</strong>, " +
-    //       "press the letter F on the keyboard as fast as you can.</p>" +
-    //       "<p>If the circle is <strong>orange</strong>, press the letter J " +
-    //       "as fast as you can.</p>" +
-    //       "<div style='width: 700px;'>"+
-    //       "<div style='float: left;'><img src='img/blue.png'></img>" +
-    //       "<p class='small'><strong>Press the F key</strong></p></div>" +
-    //       // "<div class='float: right;'><img src='img/orange.png'></img>" +
-    //       "<p class='small'><strong>Press the J key</strong></p></div>" +
-    //       "</div>"+
-    //       "<p>Press any key to begin.</p>",
-    //   post_trial_gap: 2000
-    // };
-    // timeline.push(instructions);
-
-    /* test trials */
 
     var page1 = {
       type: "html-keyboard-response",
@@ -82,118 +69,109 @@
     };
     timeline.push(page5);
 
-
-
-
-
     var fixation = {
       type: 'html-keyboard-response',
       stimulus: '<div style="font-size:60px;">+</div>',
       choices: jsPsych.NO_KEYS,
-      trial_duration: function(){
-        return jsPsych.randomization.sampleWithoutReplacement([250, 500, 750, 1000, 1250, 1500, 1750, 2000], 1)[0];
-      },
+      trial_duration: 200,
       data: {test_part: 'fixation'}
     }
 
     var test = {
       type: 'zeyi',
-      dot: jsPsych.timelineVariable('stimulus'),
-      choices: ['f', 'j'],
+      dot: 'img/orange.png',
+      choices: ['Q', 'P'],
+      initialspeed:  function(){
+        return jsPsych.randomization.sampleWithoutReplacement([0, 0.001, 0.001], 1)[0];
+      },
       initialkey:  function(){
         return jsPsych.randomization.sampleWithoutReplacement([-1,1], 1)[0];
       },
       boundaryL: function(){
-        return jsPsych.randomization.sampleWithoutReplacement([0.1,0.3], 1)[0];
+        return jsPsych.randomization.sampleWithoutReplacement([0.1,0.3,0.4,0.45], 1)[0];
       },
       boundaryR: function(){
-        return jsPsych.randomization.sampleWithoutReplacement([0.7,0.9], 1)[0];
+        return jsPsych.randomization.sampleWithoutReplacement([0.55,0.6,0.7,0.9], 1)[0];
       },
 
       data: jsPsych.timelineVariable('data'),
       on_finish: function(data){
-
         // data.correct = data.key_press == jsPsych.pluginAPI.convertKeyCharacterToKeyCode(data.correct_response);
       },
     }
 
     var RDK_trials = [
 			{//Condition 1
-				correct_choice: 'a', //The correct answer for Condition 1
-				coherent_direction: function(){
-          return jsPsych.randomization.sampleWithoutReplacement([0,180], 1)[0];
-        }, //The coherent direction for Condition 1 (dots move left)
+				    coherent_direction: 0
 			},
-			// {//Condition 2
-			// 	correct_choice: 'l', //The correct answer for Condition 2
-			// 	coherent_direction: 0 //The coherent direction for Condition 2 (dots move right)
-      //
-			// },
 		];
 
-
-
 		//The test block where all the trials are nested. The properties here will trickle down to all trials in the timeline unless they have their own properties defined
-		var test_block = {
-			type: "rdk",
-			post_trial_gap: 500, //The Inter Trial Interval. You can either have no ITI, or have an ITI but change the display element to be the same color as the stimuli background to prevent flashing between trials
-			number_of_dots: 50, //Total number of dots in each aperture
+		var dotmotion = {
+			type: "zeyirdk",
+			post_trial_gap: 0, //The Inter Trial Interval. You can either have no ITI, or have an ITI but change the display element to be the same color as the stimuli background to prevent flashing between trials
+			number_of_dots: 100, //Total number of dots in each aperture
 			RDK_type: 3, //The type of RDK used
 			trial_duration: 1000, //Duration of each trial in ms
 			timeline: RDK_trials, //The timeline of all the trials
 			background_color: "white",
 			dot_color: "black",
       coherence: function(){
-        return jsPsych.randomization.sampleWithoutReplacement([0.2, 0.4, 0.6, 0.8], 1)[0];
+        return jsPsych.randomization.sampleWithoutReplacement([0.2, 0.3, 0.4, 0.45, 0.8, 0.7, 0.6, 0.55], 1)[0];
       },
-      opposite_coherence: 0.1
-
 		}
 
-
-
     var test_procedure = {
-      // timeline: [fixation, test],
-      timeline: [test_block, test],
+      timeline: [fixation, dotmotion, test],
       timeline_variables: test_stimuli,
-      repetitions: 5,
+      repetitions: 100,
       randomize_order: true
     }
     timeline.push(test_procedure);
 
-    /* define debrief */
-
-    var page4 = {
-      type: "html-keyboard-response",
-      stimulus: "."
-    };
-    timeline.push(page4);
-
-
-
     var debrief_block = {
       type: "html-keyboard-response",
       stimulus: function() {
-
-        var trials = jsPsych.data.get().filter({test_part: 'test'});
-        var correct_trials = trials.filter({correct: true});
-        var accuracy = Math.round(correct_trials.count() / trials.count() * 100);
-        var rt = Math.round(correct_trials.select('rt').mean());
-
-        return "<p>You responded correctly on "+accuracy+"% of the trials.</p>"+
-        "<p>Your average response time was "+rt+"ms.</p>"+
-        "<p>Press any key to complete the experiment. Thank you!</p>";
-
+        //
+        // var trials = jsPsych.data.get().filter({test_part: 'test'});
+        // var correct_trials = trials.filter({correct: true});
+        // var accuracy = Math.round(correct_trials.count() / trials.count() * 100);
+        // var rt = Math.round(correct_trials.select('rt').mean());
+        //
+        // return "<p>You responded correctly on "+accuracy+"% of the trials.</p>"+
+        // "<p>Your average response time was "+rt+"ms.</p>"+
+        // "<p>Press any key to complete the experiment. Thank you!</p>";
+          return "<p>Thanks for participating! There is one more IMPORTANT thing to do:</p>" +
+              "<p>Your answers will be recorded in the next page. Please copy all the contents and email it to</p> <p>zeyi@...</p>"
       }
     };
-    timeline.push(debrief_block);
 
-    /* start the experiment */
-    jsPsych.init({
-      timeline: timeline,
-      on_finish: function() {
-        jsPsych.data.displayData();
-      }
+    timeline.push(debrief_block);
+    timeline.push({
+      type: 'fullscreen',
+      fullscreen_mode: false
     });
+
+        function saveData(name, data){
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', 'write_data.php'); // 'write_data.php' is the path to the php file described above.
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.send(JSON.stringify({filename: name, filedata: data}));
+        }
+        var filename = "EXP_" + subject_id.toString() + "_" + mdate.toString();
+        /* start the experiment */
+        jsPsych.init({
+          timeline: timeline,
+          on_trial_finish: function() {
+              console.log(filename);
+              saveData(filename, jsPsych.data.get().csv());
+          },
+          on_finish: function() {
+              saveData(filename, jsPsych.data.get().csv());
+              jsPsych.data.displayData();
+
+          }
+      });
+
   </script>
 </html>
