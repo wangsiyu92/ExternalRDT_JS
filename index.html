@@ -4,6 +4,7 @@
     <title>My experiment</title>
     <script src="jspsych-6/jspsych.js"></script>
     <script src="zeyianimation.js"></script>
+    <script src="jspsych-6/plugins/jspsych-rdk.js"></script>
     <script src="jspsych-6/plugins/jspsych-animation.js"></script>
     <script src="jspsych-6/plugins/jspsych-html-keyboard-response.js"></script>
     <script src="jspsych-6/plugins/jspsych-image-keyboard-response.js"></script>
@@ -51,7 +52,7 @@
 
     var test_stimuli = [
       { stimulus: "img/blue.png", data: { test_part: 'test'} },
-      { stimulus: "img/orange.png", data: { test_part: 'test', correct_response: 'j' } }
+      // { stimulus: "img/orange.png", data: { test_part: 'test', correct_response: 'j' } }
     ];
 
 
@@ -82,9 +83,32 @@
       },
     }
 
+    var RDK_trials = [
+			{//Condition 1
+				correct_choice: 'a', //The correct answer for Condition 1
+				coherent_direction: 180 //The coherent direction for Condition 1 (dots move left)
+			},
+			{//Condition 2
+				correct_choice: 'l', //The correct answer for Condition 2
+				coherent_direction: 0 //The coherent direction for Condition 2 (dots move right)
+			},
+		];
+
+		//The test block where all the trials are nested. The properties here will trickle down to all trials in the timeline unless they have their own properties defined
+		var test_block = {
+			type: "rdk",
+			post_trial_gap: 500, //The Inter Trial Interval. You can either have no ITI, or have an ITI but change the display element to be the same color as the stimuli background to prevent flashing between trials
+			number_of_dots: 30, //Total number of dots in each aperture
+			RDK_type: 3, //The type of RDK used
+			trial_duration: 1000, //Duration of each trial in ms
+			timeline: RDK_trials, //The timeline of all the trials
+			background_color: "white",
+			dot_color: "black"
+		}
+
     var test_procedure = {
       // timeline: [fixation, test],
-      timeline: [test],
+      timeline: [test_block, test],
       timeline_variables: test_stimuli,
       repetitions: 5,
       randomize_order: true
