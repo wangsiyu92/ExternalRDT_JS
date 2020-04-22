@@ -13,6 +13,9 @@
   <body></body>
   <script>
 
+
+
+
     /* create timeline */
     var timeline = [];
 
@@ -46,7 +49,7 @@
 
     var page1 = {
       type: "html-keyboard-response",
-      stimulus: "Welcome! You are required to judge whether are more dots moving to the right side or the left side. "
+      stimulus: "In this experiment, you will judge whether more dots are moving to the right side or the left side. "
     };
     timeline.push(page1);
 
@@ -54,6 +57,33 @@
       { stimulus: "img/blue.png", data: { test_part: 'test'} },
       // { stimulus: "img/orange.png", data: { test_part: 'test', correct_response: 'j' } }
     ];
+
+    var page2 = {
+      type: "html-keyboard-response",
+      stimulus: "Dots are randomly moving in three seconds and then they will disappear. You can make a decision. "
+    };
+    timeline.push(page2);
+
+    var page3 = {
+      type: "html-keyboard-response",
+      stimulus: "Now you can press F and J key. Press F Key to LEFT. Press J key to RIGHT  "
+    };
+    timeline.push(page3);
+
+    var page4 = {
+      type: "html-keyboard-response",
+      stimulus: " One press means one unit of speed. The more times you press, the faster the dot moves. "
+    };
+    timeline.push(page4);
+
+    var page5 = {
+      type: "html-keyboard-response",
+      stimulus: "If you want to change dot move to opposite postion, press once to change the position in the lowest speed. Press twice goes back to the normal speed"
+    };
+    timeline.push(page5);
+
+
+
 
 
     var fixation = {
@@ -66,19 +96,23 @@
       data: {test_part: 'fixation'}
     }
 
-    var page2 = {
-      type: "html-keyboard-response",
-      stimulus: "Now, you can see a dot and two bars on the screen. The dot will randomly move either right or left. Once you ready to make the decision, you can press either F or J key. F key substitutes left key. J key substitutes right key. When you press the key once, it will tell you which position the square move. The more times you press, the faster the square move. Once the square touch the bar, new trial will start. If you cannot make the decision in three seconds, then the square will make a decision for you."
-    };
-    timeline.push(page2);
-
-
     var test = {
       type: 'zeyi',
       dot: jsPsych.timelineVariable('stimulus'),
       choices: ['f', 'j'],
+      initialkey:  function(){
+        return jsPsych.randomization.sampleWithoutReplacement([-1,1], 1)[0];
+      },
+      boundaryL: function(){
+        return jsPsych.randomization.sampleWithoutReplacement([0.1,0.3], 1)[0];
+      },
+      boundaryR: function(){
+        return jsPsych.randomization.sampleWithoutReplacement([0.7,0.9], 1)[0];
+      },
+
       data: jsPsych.timelineVariable('data'),
       on_finish: function(data){
+
         // data.correct = data.key_press == jsPsych.pluginAPI.convertKeyCharacterToKeyCode(data.correct_response);
       },
     }
@@ -86,25 +120,37 @@
     var RDK_trials = [
 			{//Condition 1
 				correct_choice: 'a', //The correct answer for Condition 1
-				coherent_direction: 180 //The coherent direction for Condition 1 (dots move left)
+				coherent_direction: function(){
+          return jsPsych.randomization.sampleWithoutReplacement([0,180], 1)[0];
+        }, //The coherent direction for Condition 1 (dots move left)
 			},
-			{//Condition 2
-				correct_choice: 'l', //The correct answer for Condition 2
-				coherent_direction: 0 //The coherent direction for Condition 2 (dots move right)
-			},
+			// {//Condition 2
+			// 	correct_choice: 'l', //The correct answer for Condition 2
+			// 	coherent_direction: 0 //The coherent direction for Condition 2 (dots move right)
+      //
+			// },
 		];
+
+
 
 		//The test block where all the trials are nested. The properties here will trickle down to all trials in the timeline unless they have their own properties defined
 		var test_block = {
 			type: "rdk",
 			post_trial_gap: 500, //The Inter Trial Interval. You can either have no ITI, or have an ITI but change the display element to be the same color as the stimuli background to prevent flashing between trials
-			number_of_dots: 30, //Total number of dots in each aperture
+			number_of_dots: 50, //Total number of dots in each aperture
 			RDK_type: 3, //The type of RDK used
 			trial_duration: 1000, //Duration of each trial in ms
 			timeline: RDK_trials, //The timeline of all the trials
 			background_color: "white",
-			dot_color: "black"
+			dot_color: "black",
+      coherence: function(){
+        return jsPsych.randomization.sampleWithoutReplacement([0.2, 0.4, 0.6, 0.8], 1)[0];
+      },
+      opposite_coherence: 0.1
+
 		}
+
+
 
     var test_procedure = {
       // timeline: [fixation, test],
@@ -116,6 +162,14 @@
     timeline.push(test_procedure);
 
     /* define debrief */
+
+    var page4 = {
+      type: "html-keyboard-response",
+      stimulus: "."
+    };
+    timeline.push(page4);
+
+
 
     var debrief_block = {
       type: "html-keyboard-response",
