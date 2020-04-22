@@ -43,10 +43,17 @@
 
     /* test trials */
 
+    var page1 = {
+      type: "html-keyboard-response",
+      stimulus: "Welcome! You are required to judge whether are more dots moving to the right side or the left side. "
+    };
+    timeline.push(page1);
+
     var test_stimuli = [
       { stimulus: "img/blue.png", data: { test_part: 'test'} },
-      // { stimulus: "img/orange.png", data: { test_part: 'test', correct_response: 'j' } }
+      { stimulus: "img/orange.png", data: { test_part: 'test', correct_response: 'j' } }
     ];
+
 
     var fixation = {
       type: 'html-keyboard-response',
@@ -57,6 +64,13 @@
       },
       data: {test_part: 'fixation'}
     }
+
+    var page2 = {
+      type: "html-keyboard-response",
+      stimulus: "Now, you can see a dot and two bars on the screen. The dot will randomly move either right or left. Once you ready to make the decision, you can press either F or J key. F key substitutes left key. J key substitutes right key. When you press the key once, it will tell you which position the square move. The more times you press, the faster the square move. Once the square touch the bar, new trial will start. If you cannot make the decision in three seconds, then the square will make a decision for you."
+    };
+    timeline.push(page2);
+
 
     var test = {
       type: 'zeyi',
