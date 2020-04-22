@@ -15,6 +15,12 @@ jsPsych.plugins.zeyi = (function() {
     name: 'zeyi',
     description: '',
     parameters: {
+      words: {
+        type: jsPsych.plugins.parameterType.HTML_STRING,
+        pretty_name: 'words',
+        default: "",
+        description: 'The HTML string to be displayed'
+      },
       dot: {
         type: jsPsych.plugins.parameterType.STRING,
         pretty_name: 'Stimuli',
@@ -30,7 +36,7 @@ jsPsych.plugins.zeyi = (function() {
       initialspeed: {
         type: jsPsych.plugins.parameterType.INT,
         pretty_name: 'initial moving speed',
-        default: 0.001,
+        default: 0,
         description: 'initial moving speed'
       },
         speed: {
@@ -42,7 +48,7 @@ jsPsych.plugins.zeyi = (function() {
       initialkey: {
         type: jsPsych.plugins.parameterType.INT,
         pretty_name: 'initial moving direction',
-        default: 1,
+        default: 0,
         description: 'initial moving direction.'
       },
       boundaryL: {
@@ -104,8 +110,8 @@ jsPsych.plugins.zeyi = (function() {
     var bL = trial.boundaryL * vw;
     var bR = trial.boundaryR * vw;
     var speed0 = trial.speed * vw;
-    var previouskey = trial.initialkey;
-    var speed = trial.initialspeed * vw * previouskey;
+    var speed = trial.initialspeed * vw;
+    var previouskey = trial.initialspeed/trial.speed;
     var currentkey = 0;
     var dotsize = vw * trial.dotsize;
     var xpos = vh/2;
@@ -131,7 +137,7 @@ jsPsych.plugins.zeyi = (function() {
 
 
       // show image
-      display_element.innerHTML = '<canvas id="rect" width="'+vw.toString()+'" height="'+(vh*0.9).toString()+'">';//'</canvas><img src="'+trial.dot+'" id="zeyi" style="position:absolute; left: 0; top: 0;"></img>';
+      display_element.innerHTML = '<div id="jspsych-html-keyboard-response-stimulus">'+trial.words+'</div><canvas id="rect" width="'+vw.toString()+'" height="'+(vh*0.9).toString()+'">';//'</canvas><img src="'+trial.dot+'" id="zeyi" style="position:absolute; left: 0; top: 0;"></img>';
             var canvas = document.getElementById('rect');
             var context = canvas.getContext('2d');
             context.fillStyle = "#a8ee90";

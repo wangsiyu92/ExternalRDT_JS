@@ -101,7 +101,7 @@ jsPsych.plugins["zeyirdk"] = (function() {
 		    dot_radius: {
 		      type: jsPsych.plugins.parameterType.INT,
 		      pretty_name: "Dot radius",
-		      default: 2,
+		      default: 0.01,
 		      description: "The radius of the dots in pixels"
 		    },
 		    dot_life: {
@@ -119,13 +119,13 @@ jsPsych.plugins["zeyirdk"] = (function() {
 		    aperture_width: {
 		      type: jsPsych.plugins.parameterType.INT,
 		      pretty_name: "Aperture width",
-		      default: 600,
+		      default: 0.7,
 		      description: "The width of the aperture in pixels"
 		    },
 		    aperture_height: {
 		      type: jsPsych.plugins.parameterType.INT,
 		      pretty_name: "Aperture height",
-		      default: 400,
+		      default: 0.7,
 		      description: "The height of the aperture in pixels"
 		    },
 		    dot_color: {
@@ -158,18 +158,18 @@ jsPsych.plugins["zeyirdk"] = (function() {
 		      default: 2,
 		      description: "The reinsertion rule for dots that move out of the aperture"
 		    },
-		    aperture_center_x: {
-		      type: jsPsych.plugins.parameterType.INT,
-		      pretty_name: "Aperture center X",
-		      default: window.innerWidth/2,
-		      description: "The x-coordinate of the center of the aperture"
-		    },
-		    aperture_center_y: {
-		      type: jsPsych.plugins.parameterType.INT,
-		      pretty_name: "Aperture center Y",
-		      default: window.innerHeight/2,
-		      description: "The y-coordinate of the center of the aperture"
-		    },
+		    // aperture_center_x: {
+		    //   type: jsPsych.plugins.parameterType.INT,
+		    //   pretty_name: "Aperture center X",
+		    //   default: window.innerWidth/2,
+		    //   description: "The x-coordinate of the center of the aperture"
+		    // },
+		    // aperture_center_y: {
+		    //   type: jsPsych.plugins.parameterType.INT,
+		    //   pretty_name: "Aperture center Y",
+		    //   default: window.innerHeight/2,
+		    //   description: "The y-coordinate of the center of the aperture"
+		    // },
 		    fixation_cross: {
 		      type: jsPsych.plugins.parameterType.INT, //boolean
 		      pretty_name: "Fixation cross",
@@ -228,6 +228,8 @@ jsPsych.plugins["zeyirdk"] = (function() {
 		//--------------------------------------
 		//---------SET PARAMETERS BEGIN---------
 		//--------------------------------------
+		const vw = Math.max(document.documentElement.clientWidth, window.innerWidth);
+    const vh = Math.max(document.documentElement.clientHeight, window.innerHeight);
 
 
 		//Note on '||' logical operator: If the first option is 'undefined', it evalutes to 'false' and the second option is returned as the assignment
@@ -241,18 +243,18 @@ jsPsych.plugins["zeyirdk"] = (function() {
 		trial.coherent_direction = assignParameterValue(trial.coherent_direction, 0);
 		trial.coherence = assignParameterValue(trial.coherence, 0.5);
 		trial.opposite_coherence = assignParameterValue(1 - trial.opposite_coherence, 0);
-		trial.dot_radius = assignParameterValue(trial.dot_radius, 2);
+		trial.dot_radius = assignParameterValue(trial.dot_radius, 0.01) * vw;
 		trial.dot_life = assignParameterValue(trial.dot_life, -1);
 		trial.move_distance = assignParameterValue(trial.move_distance, 1);
-		trial.aperture_width = assignParameterValue(trial.aperture_width, 600);
-		trial.aperture_height = assignParameterValue(trial.aperture_height, 400);
+		trial.aperture_width = assignParameterValue(trial.aperture_width, 0.6) * vw;
+		trial.aperture_height =assignParameterValue(trial.aperture_height, 0.4) * vh;
 		trial.dot_color = assignParameterValue(trial.dot_color, "white");
 		trial.background_color = assignParameterValue(trial.background_color, "gray");
 		trial.RDK_type = assignParameterValue(trial.RDK_type, 3);
 		trial.aperture_type = assignParameterValue(trial.aperture_type, 2);
 		trial.reinsert_type = assignParameterValue(trial.reinsert_type, 2);
-		trial.aperture_center_x = assignParameterValue(trial.aperture_center_x, window.innerWidth/2);
-		trial.aperture_center_y = assignParameterValue(trial.aperture_center_y, window.innerHeight/2);
+		trial.aperture_center_x = vw/2;
+		trial.aperture_center_y = vh/2;
 		trial.fixation_cross = assignParameterValue(trial.fixation_cross, false);
 		trial.fixation_cross_width = assignParameterValue(trial.fixation_cross_width, 20);
 		trial.fixation_cross_height = assignParameterValue(trial.fixation_cross_height, 20);
