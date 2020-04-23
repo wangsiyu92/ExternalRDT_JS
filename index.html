@@ -88,7 +88,7 @@
       initialspeed:  0,
       boundaryL: 0.1,
       boundaryR: 0.9,
-      words: "For example, if you'd like to go left, please press Q now.\n The dot will move to the LEFT. After the dot reaches the bar, you made your decision to choose left.\n PRESS Q again to confirm your chocie and move on to the next trial. ",
+      words: "For example, if you'd like to go left, please press Q now.\nThe dot will move to the LEFT. After the dot reaches the bar, you made your decision to choose left.\nPRESS Q again to confirm your chocie and move on to the next trial. ",
       data: jsPsych.timelineVariable('data'),
       on_finish: function(data){
         // data.correct = data.key_press == jsPsych.pluginAPI.convertKeyCharacterToKeyCode(data.correct_response);
@@ -112,7 +112,7 @@
       boundaryL: 0.1,
       boundaryR: 0.9,
       data: jsPsych.timelineVariable('data'),
-      words: "<p>If you'd like to go right, please press P now.<P>The dot will move to the RIGHT. After the dot reaches the bar, you made your decision to choose right. </p><p>PRESS P again to confirm your chocie and move on to the next trial.</p> ",
+      words: "If you'd like to go right, please press P now.\nThe dot will move to the RIGHT.\n After the dot reaches the bar, you made your decision to choose right. \nPRESS P again to confirm your chocie and move on to the next trial. ",
       on_finish: function(data){
         // data.correct = data.key_press == jsPsych.pluginAPI.convertKeyCharacterToKeyCode(data.correct_response);
       },
@@ -138,7 +138,7 @@
       speed: 0.0001,
       boundaryL: 0.1,
       boundaryR: 0.9,
-      words: "<p> Try pressing Q, see how fast the dot moves, press Q again to speed it up. </p><p>You can see that the dot is moving faster and faster as you press Q again and again.</p> <p> Once the dot reaches the bar, PRESS Q again to continue.</p> ",
+      words: "Try pressing Q, see how fast the dot moves, press Q again to speed it up. \nYou can see that the dot is moving faster and faster as you press Q again and again.\n Once the dot reaches the bar, PRESS Q again to continue.",
       data: jsPsych.timelineVariable('data'),
       on_finish: function(data){
         // data.correct = data.key_press == jsPsych.pluginAPI.convertKeyCharacterToKeyCode(data.correct_response);
@@ -162,7 +162,7 @@
       initialkey: -1,
       boundaryL: 0.1,
       boundaryR: 0.9,
-      words: "<p>The dot is not always staying still at the beginning, it can move to either direction randomly by itself. </p><p>Once it reaches the left bar, the dot will make the left decision for you. Press Q to continue. </p>",
+      words: "The dot is not always staying still at the beginning, it can move to either direction randomly by itself. \nOnce it reaches the left bar, the dot will make the left decision for you. Press Q to continue.",
       data: jsPsych.timelineVariable('data'),
       on_finish: function(data){
         // data.correct = data.key_press == jsPsych.pluginAPI.convertKeyCharacterToKeyCode(data.correct_response);
@@ -192,7 +192,7 @@
       initialkey: -1,
       boundaryL: 0.1,
       boundaryR: 0.9,
-      words: "<p>Now the dot wants to choose left for you, but if you want to choose right instead, PRESS P now.</p> <p>Once the dot changes its direction, you can press P again to speed it up. Once the right bar is reached, PRESS P to continue.</p> ",
+      words: "Now the dot wants to choose left for you, but if you want to choose right instead, PRESS P now.\nOnce the dot changes its direction, you can press P again to speed it up. \nOnce the right bar is reached, PRESS P to continue.",
       data: jsPsych.timelineVariable('data'),
       on_finish: function(data){
         // data.correct = data.key_press == jsPsych.pluginAPI.convertKeyCharacterToKeyCode(data.correct_response);
@@ -282,7 +282,7 @@
       },
 
       data: jsPsych.timelineVariable('data'),
-      words: "<p>PRESS Q to go left, PRESS P to go right.</p> <p>Press the same key again to speed up if you are sure of your choice.</p> <p>Press the other key to change dot direction if you change your mind at any point.</p> <p>Once the dot reaches the bar, press the same key again to confirm and move on.</p>",
+      words: "PRESS Q to go left, PRESS P to go right.\nPress the same key again to speed up if you are sure of your choice.\nPress the other key to change dot direction if you change your mind at any point.\nOnce the dot reaches the bar, press the same key again to confirm and move on.",
       on_finish: function(data){
         // data.correct = data.key_press == jsPsych.pluginAPI.convertKeyCharacterToKeyCode(data.correct_response);
       },
