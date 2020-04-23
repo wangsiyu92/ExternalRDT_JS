@@ -51,7 +51,7 @@
     var page2 = {
       type: "html-keyboard-response",
       prompt: "Press any key to continue",
-      stimulus: "Dots are randomly moving in three seconds and then they will disappear. You can make a decision. "
+      stimulus: "Dots are randomly moving in 1 second and then they will disappear. You can make a decision. "
     };
     timeline.push(page2);
     var dotmotion1 = {
@@ -77,7 +77,7 @@
 
     var page3 = {
       type: "html-keyboard-response",
-      stimulus: "Now you can press F and J key. Press F Key to LEFT. Press J key to RIGHT  "
+      stimulus: "Now you can press Q and P key. Press Q Key to LEFT. Press P key to RIGHT  "
     };
     timeline.push(page3);
 
@@ -88,6 +88,7 @@
       initialspeed:  0,
       boundaryL: 0.1,
       boundaryR: 0.9,
+      words: "<P>You need to press Q to make your decision.</p><P>The dot is moving to the LEFT. Once the dot touch the bar, PRESS Q again to continue.</p> ",
       data: jsPsych.timelineVariable('data'),
       on_finish: function(data){
         // data.correct = data.key_press == jsPsych.pluginAPI.convertKeyCharacterToKeyCode(data.correct_response);
@@ -100,6 +101,31 @@
     }
     timeline.push(page4a);
 
+
+    var test1a = {
+      type: 'zeyi',
+      dot: 'img/orange.png',
+      choices: ['Q', 'P'],
+      initialspeed:  0,
+      boundaryL: 0.1,
+      boundaryR: 0.9,
+      words: "<P>You need to press P to make your decision.</p><P>The dot is moving to the RIGHT. Once the dot touch the bar, PRESS P again to continue.</p> ",
+      data: jsPsych.timelineVariable('data'),
+      on_finish: function(data){
+        // data.correct = data.key_press == jsPsych.pluginAPI.convertKeyCharacterToKeyCode(data.correct_response);
+      },
+    }
+    var page4B = {
+      timeline: [test1a],
+      timeline_variables: test_stimuli,
+      repetitions: 1,
+    }
+    timeline.push(page4B);
+
+
+
+
+
     var page4 = {
       type: "html-keyboard-response",
       stimulus: " One press means one unit of speed. The more times you press, the faster the dot moves. "
@@ -110,15 +136,17 @@
       type: 'zeyi',
       dot: 'img/orange.png',
       choices: ['Q', 'P'],
-      initialspeed:  -0.001,
+      initialspeed:  0,
       boundaryL: 0.1,
       boundaryR: 0.9,
-      words: "You need to do xxx. ",
+      words: "<p> Press Q several times. You can see the dot are moving faster.</p> <p> Once the dot touch the bar,PRESS Q again to continue.</p> ",
       data: jsPsych.timelineVariable('data'),
       on_finish: function(data){
         // data.correct = data.key_press == jsPsych.pluginAPI.convertKeyCharacterToKeyCode(data.correct_response);
       },
     }
+
+
     var page5a = {
       timeline: [test2],
       timeline_variables: test_stimuli,
@@ -127,13 +155,58 @@
     timeline.push(page5a);
 
 
-
-
     var page5 = {
       type: "html-keyboard-response",
-      stimulus: "If you want to change dot move to opposite postion, press once to change the position in the lowest speed. Press twice goes back to the normal speed"
+      stimulus: "<p>If you want to change dot move to opposite postion, press once to change the position in the lowest speed.</p> <p>Press twice goes back to the normal speed </p>"
     };
     timeline.push(page5);
+
+
+    var test4 = {
+      type: 'zeyi',
+      dot: 'img/orange.png',
+      choices: ['Q','P'],
+      initialspeed: -0.001,
+      speed: 0.001,
+      boundaryL: 0.1,
+      boundaryR: 0.9,
+      words: "Now the dot can move from either right or left",
+      data: jsPsych.timelineVariable('data'),
+      on_finish: function(data){
+        // data.correct = data.key_press == jsPsych.pluginAPI.convertKeyCharacterToKeyCode(data.correct_response);
+      },
+    }
+
+    var page5b = {
+      timeline: [test4],
+      timeline_variables: test_stimuli,
+      repetitions: 1,
+    }
+    timeline.push(page5b);
+
+
+    var test3 = {
+      type: 'zeyi',
+      dot: 'img/orange.png',
+      choices: ['Q', 'P'],
+      initialspeed: -0.0001,
+      speed: 0.001,
+      boundaryL: 0.1,
+      boundaryR: 0.9,
+      words: "<p>PRESS P once.</p> <p>You can see the dot change to right. Press several times to touch the bar. Once touched, PRESS P to continue.</p> ",
+      data: jsPsych.timelineVariable('data'),
+      on_finish: function(data){
+        // data.correct = data.key_press == jsPsych.pluginAPI.convertKeyCharacterToKeyCode(data.correct_response);
+      },
+    }
+
+    var page5a = {
+      timeline: [test3],
+      timeline_variables: test_stimuli,
+      repetitions: 1,
+    }
+    timeline.push(page5a);
+
 
 
     var fixation = {
