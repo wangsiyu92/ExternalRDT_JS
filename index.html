@@ -118,13 +118,13 @@
 
     var test1 = {
       type: 'zeyi',
-      dot: 'img/orange.png',
       choices: ['Q', 'p'],
       initialspeed:  0,
+      speed:  0.002,
       boundaryL: 0.1,
       boundaryR: 0.9,
       words: "For example, if you'd like to go left, please press Q now.\nThe dot will move to the LEFT. After the dot reaches the bar, you made your decision to choose left.\nPRESS Q again to confirm your choice and move on to the next trial. ",
-      data: jsPsych.timelineVariable('data'),
+      // data: jsPsych.timelineVariable('data'),
       on_finish: function(data){
         // data.correct = data.key_press == jsPsych.pluginAPI.convertKeyCharacterToKeyCode(data.correct_response);
       },
@@ -139,14 +139,13 @@
 
     var test1a = {
       type: 'zeyi',
-      dot: 'img/orange.png',
       choices: ['q', 'P'],
       initialspeed:  0,
-      speed:  0.001,
+      speed:  0.002,
       initialkey: 0,
       boundaryL: 0.1,
       boundaryR: 0.9,
-      data: jsPsych.timelineVariable('data'),
+      // data: jsPsych.timelineVariable('data'),
       words: "If you'd like to go right, please press P now.\nThe dot will move to the RIGHT.\n After the dot reaches the bar, you made your decision to choose right. \nPRESS P again to confirm your choice and move on to the next trial. ",
       on_finish: function(data){
         // data.correct = data.key_press == jsPsych.pluginAPI.convertKeyCharacterToKeyCode(data.correct_response);
@@ -190,15 +189,14 @@
 
     var test4 = {
       type: 'zeyi',
-      dot: 'img/orange.png',
       choices: ['Q','p'],
-      initialspeed: -0.001,
-      speed: 0,
+      initialspeed: -0.002,
+      speed: 0.002,
       initialkey: -1,
       boundaryL: 0.1,
       boundaryR: 0.9,
       words: "The dot is not always staying still at the beginning, it can move to either direction randomly by itself. \nOnce it reaches the left bar, the dot will make the left decision for you. Press Q to continue.",
-      data: jsPsych.timelineVariable('data'),
+      // data: jsPsych.timelineVariable('data'),
       on_finish: function(data){
         // data.correct = data.key_press == jsPsych.pluginAPI.convertKeyCharacterToKeyCode(data.correct_response);
       },
@@ -221,14 +219,14 @@
     var test3 = {
       type: 'zeyi',
       dot: 'img/orange.png',
-      choices: ['Q', 'P'],
-      initialspeed: -0.0001,
+      choices: ['q', 'P'],
+      initialspeed: -0.0005,
       speed: 0.001,
       initialkey: -1,
       boundaryL: 0.1,
       boundaryR: 0.9,
       words: "Now the dot wants to choose left for you, but if you want to choose right instead, PRESS P now.\nOnce the right bar is reached, PRESS P to continue.",
-      data: jsPsych.timelineVariable('data'),
+      // data: jsPsych.timelineVariable('data'),
       on_finish: function(data){
         // data.correct = data.key_press == jsPsych.pluginAPI.convertKeyCharacterToKeyCode(data.correct_response);
       },
@@ -243,14 +241,13 @@
 
     var test11 = {
       type: 'zeyi',
-      dot: 'img/orange.png',
-      choices: ['Q', 'p'],
-      initialspeed:  0.002,
-      speed:  0.002,
-      boundaryL: 0.4,
+      choices: ['Q', 'P'],
+      initialspeed:  0.003,
+      speed:  0.003,
+      boundaryL: 0.45,
       boundaryR: 0.95,
       words: "Both the left bar and right bar will be at a different location each trial. \n The speed of the dot will also vary from trial to trial.",
-      data: jsPsych.timelineVariable('data'),
+      // data: jsPsych.timelineVariable('data'),
       on_finish: function(data){
         // data.correct = data.key_press == jsPsych.pluginAPI.convertKeyCharacterToKeyCode(data.correct_response);
       },
@@ -272,7 +269,6 @@
 
     var test = {
       type: 'zeyi',
-      dot: 'img/orange.png',
       choices: ['Q', 'P'],
       initialspeed:  function(){
         return jsPsych.randomization.sampleWithoutReplacement([0, -0.001, 0.001, 0.002, -0.002, 0.003, -0.003], 1, [2,1,1,1,1,1,1])[0];
@@ -327,7 +323,7 @@
       dot: 'img/orange.png',
       choices: ['Q', 'P'],
       initialspeed:  function(){
-        return jsPsych.randomization.sampleWithoutReplacement([0, -0.001, 0.001], 1)[0];
+        return jsPsych.randomization.sampleWithoutReplacement([0, -0.001, 0.002,-0.003, 0.001, -0.002, 0.003], 1)[0];
       },
       boundaryL: function(){
         return jsPsych.randomization.sampleWithoutReplacement([0.45,0.2,0.3,0.4], 1)[0];
@@ -408,7 +404,7 @@
               if (jsPsych.data.get().count() % 10 == 0){
                   var tsubname =JSON.parse(JSON.stringify(jsPsych.data.get().first(2).values()));
                   subname = tsubname[1].subname;
-                  var filename = "EXPV2_"+ subname + "_" + subject_id.toString() + "_" + mdate.toString();
+                  var filename = "CONSP_"+ subname + "_" + subject_id.toString() + "_" + mdate.toString();
 
                   saveData(filename, jsPsych.data.get().csv());
               }
@@ -417,7 +413,7 @@
           on_finish: function() {
               var tsubname =JSON.parse(JSON.stringify(jsPsych.data.get().first(2).values()));
               subname = tsubname[1].subname;
-              var filename = "FINISH_"+ subname + "_" + subject_id.toString() + "_" + mdate.toString();
+              var filename = "FCONSP_"+ subname + "_" + subject_id.toString() + "_" + mdate.toString();
 
               saveData(filename, jsPsych.data.get().csv());
               jsPsych.data.displayData();

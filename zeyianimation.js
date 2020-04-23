@@ -21,12 +21,6 @@ jsPsych.plugins.zeyi = (function() {
         default: "",
         description: 'The HTML string to be displayed'
       },
-      dot: {
-        type: jsPsych.plugins.parameterType.STRING,
-        pretty_name: 'Stimuli',
-        default: undefined,
-        description: 'The images to be displayed.'
-      },
         dotsize: {
           type: jsPsych.plugins.parameterType.INT,
           pretty_name: 'Stimuli size',
@@ -143,7 +137,7 @@ jsPsych.plugins.zeyi = (function() {
       display_element.innerHTML = '<canvas id="rect" width="'+vw.toString()+'" height="'+(vh*0.8).toString()+'">';//'</canvas><img src="'+trial.dot+'" id="zeyi" style="position:absolute; left: 0; top: 0;"></img>';
             var canvas = document.getElementById('rect');
             var context = canvas.getContext('2d');
-            context.font = '30px Arial';
+            context.font = Math.floor(vh/40) + 'px Arial';
             context.textAlign = "center";
             var txt = trial.words;
             var lines = txt.split('\n');
@@ -188,13 +182,6 @@ jsPsych.plugins.zeyi = (function() {
 
 
                   // record when image was shown
-            animation_sequence.push({
-                mRT: performance.now() - startTime,
-                mPos: ypos,
-                mSpeed: speed,
-                mKey: currentkey,
-                mDir: previouskey
-            });
 
             if (ypos - dotsize/2 < bL || ypos + dotsize/2 > bR) {
                 if (ypos - dotsize/2 < bL){
@@ -266,6 +253,13 @@ jsPsych.plugins.zeyi = (function() {
               isend = 1;
           }
       }
+      animation_sequence.push({
+          mRT: performance.now() - startTime,
+          mPos: ypos,
+          mSpeed: speed,
+          mKey: currentkey,
+          mDir: previouskey
+      });
 
       // after a valid response, the stimulus will have the CSS class 'responded'
       // which can be used to provide visual feedback that a response was recorded
