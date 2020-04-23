@@ -119,7 +119,7 @@
     var test1 = {
       type: 'zeyi',
       choices: ['Q', 'p'],
-      initialspeed:  0,
+      initialkey:  0,
       speed:  0.002,
       boundaryL: 0.1,
       boundaryR: 0.9,
@@ -220,9 +220,9 @@
       type: 'zeyi',
       dot: 'img/orange.png',
       choices: ['q', 'P'],
-      initialspeed: -0.0005,
-      speed: 0.001,
       initialkey: -1,
+      speed: 0.001,
+      initialspeed: -0.005,
       boundaryL: 0.1,
       boundaryR: 0.9,
       words: "Now the dot wants to choose left for you, but if you want to choose right instead, PRESS P now.\nOnce the right bar is reached, PRESS P to continue.",
@@ -242,7 +242,7 @@
     var test11 = {
       type: 'zeyi',
       choices: ['Q', 'P'],
-      initialspeed:  0.003,
+      initialkey:  1,
       speed:  0.003,
       boundaryL: 0.45,
       boundaryR: 0.95,
@@ -270,8 +270,11 @@
     var test = {
       type: 'zeyi',
       choices: ['Q', 'P'],
-      initialspeed:  function(){
-        return jsPsych.randomization.sampleWithoutReplacement([0, -0.001, 0.001, 0.002, -0.002, 0.003, -0.003], 1, [2,1,1,1,1,1,1])[0];
+      initialkey:  function(){
+        return jsPsych.randomization.sampleWithoutReplacement([0, -1, 1], 1, [2,3,3])[0];
+      },
+      speed:  function(){
+        return jsPsych.randomization.sampleWithoutReplacement([0.001, 0.002, 0.003], 1)[0];
       },
       boundaryL: function(){
         return Math.random() * 0.35 + 0.1;
@@ -322,9 +325,13 @@
       type: 'zeyi',
       dot: 'img/orange.png',
       choices: ['Q', 'P'],
-      initialspeed:  function(){
-        return jsPsych.randomization.sampleWithoutReplacement([0, -0.001, 0.002,-0.003, 0.001, -0.002, 0.003], 1)[0];
+      initialkey:  function(){
+        return jsPsych.randomization.sampleWithoutReplacement([0, -1,1], 1)[0];
       },
+      speed:  function(){
+        return jsPsych.randomization.sampleWithoutReplacement([0.001,0.002,0.003], 1)[0];
+      },
+
       boundaryL: function(){
         return jsPsych.randomization.sampleWithoutReplacement([0.45,0.2,0.3,0.4], 1)[0];
       },
