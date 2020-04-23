@@ -55,7 +55,7 @@
     })
 
     var mdate = dateString+ "T" + timestamp[0] + timestamp[1] +  timestamp[3] + timestamp[4] +  timestamp[6] + timestamp[7]+  timestamp[9] + timestamp[10];
-    var dotduration = 1500;
+    var dotduration = 1000;
     jsPsych.data.addProperties({
       subject: subject_id,
       date: mdate
@@ -85,7 +85,7 @@
     var page2 = {
       type: "html-keyboard-response",
       prompt: "Press any key to continue",
-      stimulus: "<p>Dot motion will be presented for 1.5 second. After that, the dots will disappear and you will make your decision. </p><p>Which direction are most dots moving in? </p>"
+      stimulus: "<p>Dot motion will be presented for 1 second. After that, the dots will disappear and you will make your decision. </p><p>Which direction are most dots moving in? </p>"
     };
     timeline.push(page2);
     var dotmotion1 = {
@@ -291,14 +291,14 @@
 			background_color: "white",
 			dot_color: "black",
       coherence: function(){
-        return jsPsych.randomization.sampleWithoutReplacement([0.2, 0.3, 0.4, 0.1, 0.8, 0.7, 0.6, 0.9], 1)[0];
+        return jsPsych.randomization.sampleWithoutReplacement([0.2, 0.3, 0.4, 0.45, 0.8, 0.7, 0.6, 0.55], 1)[0];
       },
 		}
 
 
     var page6 = {
       type: "html-keyboard-response",
-      stimulus: "To make sure everything makes sense, let''s do some practice trials first."
+      stimulus: "<p>To repeat, your goal is to decide which direction most dots are moving in.</p><p> To make sure everything makes sense, let''s do some practice trials first.</p>"
     };
     timeline.push(page6);
 
@@ -311,10 +311,10 @@
         return jsPsych.randomization.sampleWithoutReplacement([0, -0.001, 0.001], 1)[0];
       },
       boundaryL: function(){
-        return jsPsych.randomization.sampleWithoutReplacement([0.1,0.2,0.3,0.4], 1)[0];
+        return jsPsych.randomization.sampleWithoutReplacement([0.45,0.2,0.3,0.4], 1)[0];
       },
       boundaryR: function(){
-        return jsPsych.randomization.sampleWithoutReplacement([0.6,0.7,0.8,0.9], 1)[0];
+        return jsPsych.randomization.sampleWithoutReplacement([0.6,0.7,0.8,0.55], 1)[0];
       },
 
       data: jsPsych.timelineVariable('data'),
@@ -382,24 +382,24 @@
             xhr.setRequestHeader('Content-Type', 'application/json');
             xhr.send(JSON.stringify({filename: name, filedata: data}));
         }
-        /* start the experiment */
 
         jsPsych.init({
           timeline: timeline,
           on_trial_finish: function() {
-              if (jsPsych.data.get().count() == 2){
-                  var tsubname =JSON.parse(JSON.stringify(jsPsych.data.get().last(1).values()));
-                  subname = tsubname[0].subname;
-              }
-              // console.log(jsPsych.data.get().count());
-              // console.log(subname);
               if (jsPsych.data.get().count() > 1){
-                  var filename = "EXP_"+ subname + "_" + subject_id.toString() + "_" + mdate.toString();
+                  var tsubname =JSON.parse(JSON.stringify(jsPsych.data.get().first(2).values()));
+                  subname = tsubname[1].subname;
+                  var filename = "EXPV2_"+ subname + "_" + subject_id.toString() + "_" + mdate.toString();
+
                   saveData(filename, jsPsych.data.get().csv());
               }
 
           },
           on_finish: function() {
+              var tsubname =JSON.parse(JSON.stringify(jsPsych.data.get().first(2).values()));
+              subname = tsubname[1].subname;
+              var filename = "FINISH_"+ subname + "_" + subject_id.toString() + "_" + mdate.toString();
+
               saveData(filename, jsPsych.data.get().csv());
               jsPsych.data.displayData();
 
