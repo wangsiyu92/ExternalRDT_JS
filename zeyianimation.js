@@ -48,7 +48,7 @@ jsPsych.plugins.zeyi = (function() {
       initialkey: {
         type: jsPsych.plugins.parameterType.INT,
         pretty_name: 'initial moving direction',
-        default: undefined,
+        default: 999,
         description: 'initial moving direction.'
       },
       boundaryL: {
@@ -111,7 +111,10 @@ jsPsych.plugins.zeyi = (function() {
     var bR = trial.boundaryR * vw;
     var speed0 = trial.speed * vw;
     var speed = trial.initialspeed * vw;
-    var previouskey = assignParameterValue(trial.initialkey, trial.initialspeed/trial.speed);
+    if (trial.initialkey == 999){
+      trial.initialkey = trial.initialspeed/trial.speed;
+    }
+    var previouskey = trial.initialkey;
     var currentkey = 0;
     var dotsize = vw * trial.dotsize;
     var xpos = vh/2;
@@ -137,9 +140,19 @@ jsPsych.plugins.zeyi = (function() {
 
 
       // show image
-      display_element.innerHTML = '<div id="jspsych-html-keyboard-response-stimulus">'+trial.words+'</div><canvas id="rect" width="'+vw.toString()+'" height="'+(vh*0.9).toString()+'">';//'</canvas><img src="'+trial.dot+'" id="zeyi" style="position:absolute; left: 0; top: 0;"></img>';
+      display_element.innerHTML = '<canvas id="rect" width="'+vw.toString()+'" height="'+(vh*0.9).toString()+'">';//'</canvas><img src="'+trial.dot+'" id="zeyi" style="position:absolute; left: 0; top: 0;"></img>';
             var canvas = document.getElementById('rect');
             var context = canvas.getContext('2d');
+            context.font = '30px Arial';
+            context.textAlign = "center";
+            var txt = trial.words;
+            var lines = txt.split('\n');
+            var lineheight = 0.05 * vh;
+            for (var i = 0; i<lines.length; i++)
+                context.fillText(lines[i],  vw/2, vh* 0.1 + (i*lineheight) );
+
+
+
             context.fillStyle = "#a8ee90";
             context.fillRect(0,xpos - vh * 0.2, vw, vh * 0.4);
             if (islasttrial == 1){

@@ -88,7 +88,7 @@
       initialspeed:  0,
       boundaryL: 0.1,
       boundaryR: 0.9,
-      words: "<p>For example, if you'd like to go left, please press Q now. </p><p>The dot will move to the LEFT. After the dot reaches the bar, you made your decision to choose left. </p><p>PRESS Q again to confirm your chocie and move on to the next trial.</p> ",
+      words: "For example, if you'd like to go left, please press Q now.\n The dot will move to the LEFT. After the dot reaches the bar, you made your decision to choose left.\n PRESS Q again to confirm your chocie and move on to the next trial. ",
       data: jsPsych.timelineVariable('data'),
       on_finish: function(data){
         // data.correct = data.key_press == jsPsych.pluginAPI.convertKeyCharacterToKeyCode(data.correct_response);
@@ -107,10 +107,12 @@
       dot: 'img/orange.png',
       choices: ['q', 'P'],
       initialspeed:  0,
+      speed:  0.001,
+      initialkey: 0,
       boundaryL: 0.1,
       boundaryR: 0.9,
-      words: "<p>If you'd like to go right, please press P now.<P>The dot will move to the RIGHT. After the dot reaches the bar, you made your decision to choose right. </p><p>PRESS P again to confirm your chocie and move on to the next trial.</p> ",
       data: jsPsych.timelineVariable('data'),
+      words: "<p>If you'd like to go right, please press P now.<P>The dot will move to the RIGHT. After the dot reaches the bar, you made your decision to choose right. </p><p>PRESS P again to confirm your chocie and move on to the next trial.</p> ",
       on_finish: function(data){
         // data.correct = data.key_press == jsPsych.pluginAPI.convertKeyCharacterToKeyCode(data.correct_response);
       },
