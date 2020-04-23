@@ -101,7 +101,7 @@ jsPsych.plugins["zeyirdk"] = (function() {
 		    dot_radius: {
 		      type: jsPsych.plugins.parameterType.INT,
 		      pretty_name: "Dot radius",
-		      default: 0.01,
+		      default: 0.005,
 		      description: "The radius of the dots in pixels"
 		    },
 		    dot_life: {
@@ -380,7 +380,7 @@ jsPsych.plugins["zeyirdk"] = (function() {
 
 		//Declare variables for width and height, and also set the canvas width and height to the window width and height
 		var canvasWidth = canvas.width = window.innerWidth;
-		var canvasHeight = canvas.height = window.innerHeight;
+		var canvasHeight = canvas.height = window.innerHeight * 0.9;
 
 		//Set the canvas background color
 		canvas.style.backgroundColor = backgroundColor;

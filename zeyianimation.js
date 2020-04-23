@@ -140,7 +140,7 @@ jsPsych.plugins.zeyi = (function() {
 
 
       // show image
-      display_element.innerHTML = '<canvas id="rect" width="'+vw.toString()+'" height="'+(vh*0.9).toString()+'">';//'</canvas><img src="'+trial.dot+'" id="zeyi" style="position:absolute; left: 0; top: 0;"></img>';
+      display_element.innerHTML = '<canvas id="rect" width="'+vw.toString()+'" height="'+(vh*0.8).toString()+'">';//'</canvas><img src="'+trial.dot+'" id="zeyi" style="position:absolute; left: 0; top: 0;"></img>';
             var canvas = document.getElementById('rect');
             var context = canvas.getContext('2d');
             context.font = '30px Arial';

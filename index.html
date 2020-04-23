@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>My experiment</title>
-    <script src="jspsych-6/jspsych.js"></script>
+    <title>Zeyi's experiment</title>
+    <script src="jspsych.js"></script>
     <script src="zeyianimation.js"></script>
     <script src="zeyirdk.js"></script>
+    <script src="jspsych-6/plugins/jspsych-survey-text.js"></script>
     <script src="jspsych-6/plugins/jspsych-fullscreen.js"></script>
     <script src="jspsych-6/plugins/jspsych-animation.js"></script>
     <script src="jspsych-6/plugins/jspsych-html-keyboard-response.js"></script>
@@ -16,19 +17,52 @@
   <script>
     var aw = 0.8;
     var ah = 0.6;
-    var subject_id = jsPsych.randomization.randomID(10);
-    var mdate = Date.now();
-    console.log(mdate);
-    jsPsych.data.addProperties({
-      subject: subject_id,
-      date: mdate
-    });
+    var subname = 'joe';
+
     /* create timeline */
     var timeline = [];
     timeline.push({
       type: 'fullscreen',
       fullscreen_mode: true
     });
+    var survey_trial = {
+      type: 'survey-text',
+      questions: [
+        {prompt: "Name: ", name: 'name'},
+      ],
+      on_finish: function(data){
+          var temp = JSON.parse(data.responses);
+          data.subname = temp.name;
+      }
+    };
+    timeline.push(survey_trial)
+
+    var subject_id = jsPsych.randomization.randomID(10);
+    var currentDate = new Date();
+
+    var date = currentDate.getDate();
+    var month = currentDate.getMonth(); //Be careful! January is 0 not 1
+    var year = currentDate.getFullYear();
+    function pad(n) {
+        return n<10 ? '0'+n : n;
+    }
+
+    var dateString = pad(year) + pad(month + 1) +pad(date);
+    var timestamp = currentDate.toLocaleTimeString(undefined, {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+    })
+
+    var mdate = dateString+ "T" + timestamp[0] + timestamp[1] +  timestamp[3] + timestamp[4] +  timestamp[6] + timestamp[7]+  timestamp[9] + timestamp[10];
+    var dotduration = 1500;
+    jsPsych.data.addProperties({
+      subject: subject_id,
+      date: mdate
+    });
+
+
+
     /* define welcome message trial */
     var welcome = {
       type: "html-keyboard-response",
@@ -56,10 +90,11 @@
     timeline.push(page2);
     var dotmotion1 = {
       type: "zeyirdk",
+      choices: jsPsych.NO_KEYS,
       post_trial_gap: 0, //The Inter Trial Interval. You can either have no ITI, or have an ITI but change the display element to be the same color as the stimuli background to prevent flashing between trials
       number_of_dots: 100, //Total number of dots in each aperture
       RDK_type: 3, //The type of RDK used
-      trial_duration: 1000, //Duration of each trial in ms
+      trial_duration: dotduration, //Duration of each trial in ms
       timeline: RDK_trials, //The timeline of all the trials
       aperture_width: aw,
       aperture_height: ah,
@@ -135,7 +170,7 @@
       dot: 'img/orange.png',
       choices: ['Q', 'p'],
       initialspeed:  0,
-      speed: 0.0001,
+      speed: 0.0005,
       boundaryL: 0.1,
       boundaryR: 0.9,
       words: "Try pressing Q, see how fast the dot moves, press Q again to speed it up. \nYou can see that the dot is moving faster and faster as you press Q again and again.\n Once the dot reaches the bar, PRESS Q again to continue.",
@@ -245,17 +280,18 @@
 		//The test block where all the trials are nested. The properties here will trickle down to all trials in the timeline unless they have their own properties defined
 		var dotmotion = {
 			type: "zeyirdk",
+      choices: jsPsych.NO_KEYS,
 			post_trial_gap: 0, //The Inter Trial Interval. You can either have no ITI, or have an ITI but change the display element to be the same color as the stimuli background to prevent flashing between trials
 			number_of_dots: 100, //Total number of dots in each aperture
 			RDK_type: 3, //The type of RDK used
-			trial_duration: 1000, //Duration of each trial in ms
+			trial_duration: dotduration, //Duration of each trial in ms
 			timeline: RDK_trials, //The timeline of all the trials
       aperture_width: aw,
       aperture_height: ah,
 			background_color: "white",
 			dot_color: "black",
       coherence: function(){
-        return jsPsych.randomization.sampleWithoutReplacement([0.2, 0.3, 0.4, 0.45, 0.8, 0.7, 0.6, 0.55], 1)[0];
+        return jsPsych.randomization.sampleWithoutReplacement([0.2, 0.3, 0.4, 0.1, 0.8, 0.7, 0.6, 0.9], 1)[0];
       },
 		}
 
@@ -346,13 +382,22 @@
             xhr.setRequestHeader('Content-Type', 'application/json');
             xhr.send(JSON.stringify({filename: name, filedata: data}));
         }
-        var filename = "EXP_" + subject_id.toString() + "_" + mdate.toString();
         /* start the experiment */
+
         jsPsych.init({
           timeline: timeline,
           on_trial_finish: function() {
-              console.log(filename);
-              saveData(filename, jsPsych.data.get().csv());
+              if (jsPsych.data.get().count() == 2){
+                  var tsubname =JSON.parse(JSON.stringify(jsPsych.data.get().last(1).values()));
+                  subname = tsubname[0].subname;
+              }
+              // console.log(jsPsych.data.get().count());
+              // console.log(subname);
+              if (jsPsych.data.get().count() > 1){
+                  var filename = "EXP_"+ subname + "_" + subject_id.toString() + "_" + mdate.toString();
+                  saveData(filename, jsPsych.data.get().csv());
+              }
+
           },
           on_finish: function() {
               saveData(filename, jsPsych.data.get().csv());
