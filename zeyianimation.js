@@ -48,7 +48,7 @@ jsPsych.plugins.zeyi = (function() {
       initialkey: {
         type: jsPsych.plugins.parameterType.INT,
         pretty_name: 'initial moving direction',
-        default: 0,
+        default: undefined,
         description: 'initial moving direction.'
       },
       boundaryL: {
@@ -111,7 +111,7 @@ jsPsych.plugins.zeyi = (function() {
     var bR = trial.boundaryR * vw;
     var speed0 = trial.speed * vw;
     var speed = trial.initialspeed * vw;
-    var previouskey = trial.initialspeed/trial.speed;
+    var previouskey = assignParameterValue(trial.initialkey, trial.initialspeed/trial.speed);
     var currentkey = 0;
     var dotsize = vw * trial.dotsize;
     var xpos = vh/2;
