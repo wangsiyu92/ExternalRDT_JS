@@ -222,7 +222,7 @@ jsPsych.plugins.zeyi = (function() {
       // }
       if (currentkey !== 0){
           if (currentkey == previouskey) {
-              speed = speed + speed0 * currentkey;
+              speed = speed;// + speed0 * currentkey;
           }
           if (currentkey !== previouskey) {
               speed = speed0 * currentkey;

@@ -159,34 +159,34 @@
     }
     timeline.push(page4B);
 
-    var page4 = {
-      type: "html-keyboard-response",
-      stimulus: "<p>Is the dot moving too slow? You can press the same key (Q or P) again to speed up.</p><p>The more times you press it, the faster the speed will be. </p>"
-    };
-    timeline.push(page4);
-
-    var test2 = {
-      type: 'zeyi',
-      dot: 'img/orange.png',
-      choices: ['Q', 'p'],
-      initialspeed:  0,
-      speed: 0.0005,
-      boundaryL: 0.1,
-      boundaryR: 0.9,
-      words: "Try pressing Q, see how fast the dot moves, press Q again to speed it up. \nYou can see that the dot is moving faster and faster as you press Q again and again.\n Once the dot reaches the bar, PRESS Q again to continue.",
-      data: jsPsych.timelineVariable('data'),
-      on_finish: function(data){
-        // data.correct = data.key_press == jsPsych.pluginAPI.convertKeyCharacterToKeyCode(data.correct_response);
-      },
-    }
-
-
-    var page5a = {
-      timeline: [test2],
-      timeline_variables: test_stimuli,
-      repetitions: 1,
-    }
-    timeline.push(page5a);
+    // var page4 = {
+    //   type: "html-keyboard-response",
+    //   stimulus: "<p>Is the dot moving too slow? You can press the same key (Q or P) again to speed up.</p><p>The more times you press it, the faster the speed will be. </p>"
+    // };
+    // timeline.push(page4);
+    //
+    // var test2 = {
+    //   type: 'zeyi',
+    //   dot: 'img/orange.png',
+    //   choices: ['Q', 'p'],
+    //   initialspeed:  0,
+    //   speed: 0.0005,
+    //   boundaryL: 0.1,
+    //   boundaryR: 0.9,
+    //   words: "Try pressing Q, see how fast the dot moves, press Q again to speed it up. \nYou can see that the dot is moving faster and faster as you press Q again and again.\n Once the dot reaches the bar, PRESS Q again to continue.",
+    //   data: jsPsych.timelineVariable('data'),
+    //   on_finish: function(data){
+    //     // data.correct = data.key_press == jsPsych.pluginAPI.convertKeyCharacterToKeyCode(data.correct_response);
+    //   },
+    // }
+    //
+    //
+    // var page5a = {
+    //   timeline: [test2],
+    //   timeline_variables: test_stimuli,
+    //   repetitions: 1,
+    // }
+    // timeline.push(page5a);
 
     var test4 = {
       type: 'zeyi',
@@ -213,7 +213,7 @@
 
     var page5 = {
           type: "html-keyboard-response",
-          stimulus: "<p>The dot is moving towards the left, however, if you want to choose right instead, </p><p>you need to press the P key to reverse the moving direction of the dot.</p> <p>Once it changes its direction, you can press P again to speed it up. </p>"
+          stimulus: "<p>The dot is moving towards the left, however, if you want to choose right instead, </p><p>you need to press the P key to reverse the moving direction of the dot.</p> "
     };
     timeline.push(page5);
 
@@ -227,7 +227,7 @@
       initialkey: -1,
       boundaryL: 0.1,
       boundaryR: 0.9,
-      words: "Now the dot wants to choose left for you, but if you want to choose right instead, PRESS P now.\nOnce the dot changes its direction, you can press P again to speed it up. \nOnce the right bar is reached, PRESS P to continue.",
+      words: "Now the dot wants to choose left for you, but if you want to choose right instead, PRESS P now.\nOnce the right bar is reached, PRESS P to continue.",
       data: jsPsych.timelineVariable('data'),
       on_finish: function(data){
         // data.correct = data.key_press == jsPsych.pluginAPI.convertKeyCharacterToKeyCode(data.correct_response);
@@ -241,7 +241,26 @@
     }
     timeline.push(page5a);
 
-
+    var test11 = {
+      type: 'zeyi',
+      dot: 'img/orange.png',
+      choices: ['Q', 'p'],
+      initialspeed:  0.002,
+      speed:  0.002,
+      boundaryL: 0.4,
+      boundaryR: 0.95,
+      words: "Both the left bar and right bar will be at a different location each trial. \n The speed of the dot will also vary from trial to trial.",
+      data: jsPsych.timelineVariable('data'),
+      on_finish: function(data){
+        // data.correct = data.key_press == jsPsych.pluginAPI.convertKeyCharacterToKeyCode(data.correct_response);
+      },
+    }
+    var page14a = {
+      timeline: [test11],
+      timeline_variables: test_stimuli,
+      repetitions: 1,
+    }
+    timeline.push(page14a);
 
     var fixation = {
       type: 'html-keyboard-response',
@@ -256,13 +275,13 @@
       dot: 'img/orange.png',
       choices: ['Q', 'P'],
       initialspeed:  function(){
-        return jsPsych.randomization.sampleWithoutReplacement([0, -0.001, 0.001], 1)[0];
+        return jsPsych.randomization.sampleWithoutReplacement([0, -0.001, 0.001, 0.002, -0.002, 0.003, -0.003], 1, [2,1,1,1,1,1,1])[0];
       },
       boundaryL: function(){
-        return jsPsych.randomization.sampleWithoutReplacement([0.1,0.2,0.3,0.4], 1)[0];
+        return Math.random() * 0.35 + 0.1;
       },
       boundaryR: function(){
-        return jsPsych.randomization.sampleWithoutReplacement([0.6,0.7,0.8,0.9], 1)[0];
+        return Math.random() * 0.35 + 0.55;
       },
 
       data: jsPsych.timelineVariable('data'),
@@ -291,7 +310,7 @@
 			background_color: "white",
 			dot_color: "black",
       coherence: function(){
-        return jsPsych.randomization.sampleWithoutReplacement([0.2, 0.3, 0.4, 0.45, 0.8, 0.7, 0.6, 0.55], 1)[0];
+        return Math.random() * 0.6 + 0.2;
       },
 		}
 
@@ -318,7 +337,7 @@
       },
 
       data: jsPsych.timelineVariable('data'),
-      words: "PRESS Q to go left, PRESS P to go right.\nPress the same key again to speed up if you are sure of your choice.\nPress the other key to change dot direction if you change your mind at any point.\nOnce the dot reaches the bar, press the same key again to confirm and move on.",
+      words: "PRESS Q to go left, PRESS P to go right.\nYou can change direction at any point.\nOnce the dot reaches the bar, press the same key again to confirm and move on.",
       on_finish: function(data){
         // data.correct = data.key_press == jsPsych.pluginAPI.convertKeyCharacterToKeyCode(data.correct_response);
       },
@@ -386,7 +405,7 @@
         jsPsych.init({
           timeline: timeline,
           on_trial_finish: function() {
-              if (jsPsych.data.get().count() > 1){
+              if (jsPsych.data.get().count() % 10 == 0){
                   var tsubname =JSON.parse(JSON.stringify(jsPsych.data.get().first(2).values()));
                   subname = tsubname[1].subname;
                   var filename = "EXPV2_"+ subname + "_" + subject_id.toString() + "_" + mdate.toString();
