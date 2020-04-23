@@ -85,7 +85,7 @@
     var page2 = {
       type: "html-keyboard-response",
       prompt: "Press any key to continue",
-      stimulus: "<p>Dot motion will be presented for 1 second. After that, the dots will disappear and you will make your decision. </p><p>Which direction are most dots moving? </p>"
+      stimulus: "<p>Dot motion will be presented for 1.5 second. After that, the dots will disappear and you will make your decision. </p><p>Which direction are most dots moving in? </p>"
     };
     timeline.push(page2);
     var dotmotion1 = {
@@ -112,7 +112,7 @@
 
     var page3 = {
       type: "html-keyboard-response",
-      stimulus: "<p>To make your decision, press Q to choose left, press P to choose right. </p> <p>Remember, your job is to decide which direction most dots are moving towards. </p>"
+      stimulus: "<p>To make your decision, press Q to choose left, press P to choose right. </p> <p>Remember, your job is to decide which direction most dots are moving in. </p>"
     };
     timeline.push(page3);
 
@@ -123,7 +123,7 @@
       initialspeed:  0,
       boundaryL: 0.1,
       boundaryR: 0.9,
-      words: "For example, if you'd like to go left, please press Q now.\nThe dot will move to the LEFT. After the dot reaches the bar, you made your decision to choose left.\nPRESS Q again to confirm your chocie and move on to the next trial. ",
+      words: "For example, if you'd like to go left, please press Q now.\nThe dot will move to the LEFT. After the dot reaches the bar, you made your decision to choose left.\nPRESS Q again to confirm your choice and move on to the next trial. ",
       data: jsPsych.timelineVariable('data'),
       on_finish: function(data){
         // data.correct = data.key_press == jsPsych.pluginAPI.convertKeyCharacterToKeyCode(data.correct_response);
@@ -147,7 +147,7 @@
       boundaryL: 0.1,
       boundaryR: 0.9,
       data: jsPsych.timelineVariable('data'),
-      words: "If you'd like to go right, please press P now.\nThe dot will move to the RIGHT.\n After the dot reaches the bar, you made your decision to choose right. \nPRESS P again to confirm your chocie and move on to the next trial. ",
+      words: "If you'd like to go right, please press P now.\nThe dot will move to the RIGHT.\n After the dot reaches the bar, you made your decision to choose right. \nPRESS P again to confirm your choice and move on to the next trial. ",
       on_finish: function(data){
         // data.correct = data.key_press == jsPsych.pluginAPI.convertKeyCharacterToKeyCode(data.correct_response);
       },
@@ -366,7 +366,7 @@
         // "<p>Your average response time was "+rt+"ms.</p>"+
         // "<p>Press any key to complete the experiment. Thank you!</p>";
           return "<p>Thanks for participating! There is one more IMPORTANT thing to do:</p>" +
-              "<p>Your answers will be recorded in the next page. Please copy all the contents and email it to</p> <p>zeyichen0324@gmail.com</p>"
+              "<p>Your answers will be recorded in the next page. Please copy all the contents and email it to</p> <p>zeyichen@email.arizona.edu</p>"
       }
     };
 
